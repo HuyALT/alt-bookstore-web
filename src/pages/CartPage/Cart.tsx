@@ -7,6 +7,7 @@ import {
   incrementItem,
   removeItemFromCart,
 } from "../../services/CartApi";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState<items[]>([]);
@@ -15,6 +16,7 @@ export default function Cart() {
     totalItems: 0,
     totalPrice: 0,
   });
+  const navigate = useNavigate();
   const { showToast } = useToast();
   const isEmptyCart = cartResponse && cartResponse.totalItems === 0;
 
@@ -213,6 +215,9 @@ export default function Cart() {
               <button
                 className="w-full py-5 bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-widest hover:bg-primary/90 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isEmptyCart}
+                onClick={() => {
+                  navigate("/shipping");
+                }}
               >
                 Proceed to Shipping
               </button>

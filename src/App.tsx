@@ -12,7 +12,8 @@ import Cart from "./pages/CartPage/Cart";
 import Wishlist from "./pages/WishlistPage/Wishlist";
 import UserDetail from "./pages/UserDetailPage/UserDetail";
 import UserAuthLayout from "./layout/UserAuthLayout";
-import Shipping from "./pages/ShippingPage/Shipping";
+import Shipping from "./pages/OrderPage/Shipping";
+import OrderSuccess from "./pages/OrderPage/OrderSuccess";
 
 function App() {
   useEffect(() => {
@@ -38,6 +39,10 @@ function App() {
         <Route element={<UserAuthLayout />}>
           <Route path="/my-profile" element={<UserDetail />} />
           <Route path="/shipping" element={<Shipping />} />
+          <Route
+            path="/order-success/:orderNumber"
+            element={<OrderSuccess />}
+          />
         </Route>
         <Route path="*" element={<div>404 Not Found</div>} />
         <Route path="/register" element={<Register />} />

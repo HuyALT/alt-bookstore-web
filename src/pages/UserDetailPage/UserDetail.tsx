@@ -12,9 +12,12 @@ import {
 import { useToast } from "../../components/ToastContext";
 import type { AddressRequest } from "../../types/request/AddressResquest";
 import AddressModal from "./AddressModal";
+import type { OrderResponse } from "../../types/response/OrderResponse";
+import { myOrders } from "../../services/OrderApi";
 
 export default function UserDetail() {
   const [addresses, setAddresses] = useState<AddressResponse[]>([]);
+  const [orders, setOrders] = useState<OrderResponse[]>([]);
   const [user, setUser] = useState<UserProfile | null>(null);
   const [openAddressModal, setOpenAddressModal] = useState(false);
   const isFirstAddress = addresses.length === 0;
@@ -44,8 +47,17 @@ export default function UserDetail() {
         showToast("error", "Failed to fetch addresses");
       }
     };
+    const fetchOrders = async () => {
+      try {
+        const response = await myOrders(0, 3);
+        setOrders(response.data);
+      } catch (error) {
+        showToast("error", "Failed to fetch orders");
+      }
+    };
     fetchUser();
     fetchAddresses();
+    fetchOrders();
   }, []);
   const sortDefaultFirst = (addresses: AddressResponse[]) => {
     return [...addresses].sort((a, b) => {
@@ -309,58 +321,33 @@ export default function UserDetail() {
               </h2>
             </div>
             <div className="space-y-6">
-              <div className="group flex gap-4 items-start pb-6 border-b border-outline-variant/10">
-                <div className="w-16 h-20 bg-surface-container-highest shrink-0 overflow-hidden">
-                  <img
-                    className="w-full h-full object-cover"
-                    data-alt="A close-up macro shot of the textured edge of a rare first-edition book, showing the yellowed pages and hand-stitched binding. The lighting is warm and directional, emphasizing the age and craftsmanship of the object. The background is a soft, out-of-focus leather surface in deep chestnut brown."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0iHDAukcxiZ-LKGQMvAM8gYdGziR6fyo41X8PgwKqoSXrsr_erKJ4vRFqQS_23LtyE9uCjG64FF2xzc14bfVJMKbsDUwO3jV4gm-JpwudfSfffop4wkDEW-X5baipzoyLCVlUAFbZ2HfsFB2deVY5N8BfOpGrP0cTls9bVB1LDP0iljmEOlq6SGOvoZzP-qhNX1HnQMSogxkn99UNYFZ89h35hPlJMx0k6dFA5fv8HuF-dZ75FD_Y1ydKUPB-O-4O0jxEZiZk35c"
-                  />
-                </div>
-                <div className="flex-1">
-                  <p className="font-label-sm text-label-sm text-primary">
-                    #ORD-2984
-                  </p>
-                  <p className="font-body-md text-on-surface font-semibold">
-                    The Great Archive
-                  </p>
-                  <p className="font-label-sm text-label-sm text-on-surface-variant mt-1">
-                    Delivered Oct 12
+              {orders.length === 0 ? (
+                <div className="p-8 bg-surface-container/50 border border-outline-variant rounded-DEFAULT text-center">
+                  <p className="font-headline-md text-on-surface mb-2">
+                    No orders yet
                   </p>
                 </div>
-                <span
-                  className="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors cursor-pointer"
-                  data-icon="arrow_forward"
-                >
-                  arrow_forward
-                </span>
-              </div>
-              <div className="group flex gap-4 items-start pb-6 border-b border-outline-variant/10">
-                <div className="w-16 h-20 bg-surface-container-highest shrink-0 overflow-hidden">
-                  <img
-                    className="w-full h-full object-cover"
-                    data-alt="A clean, minimalist book cover in a soft sage green color with a simple black geometric line art illustration of a tree. The book is presented in a bright, airy environment with crisp morning light casting gentle shadows. The overall feel is organic, peaceful, and intellectually stimulating."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuA87rthCRqbZckQYbetEzPgz71Kwt1pCtkW5FgRQ-sqZjbaqeT5kazS_3Hm8Bu7P65QEjMWyeJh40m2P3-0AAPoQ86KK-K1PpNQxB-tjQW_ZJvhFO4ozglkJw0RMBltODx52wamuvChYpS1_r-1xmS1A4vl7DKja2wmcEyfwPQrPyRzoBSJAKe8kkWFcRBcWOKtygX4e9vOk3ySyYV99QdAnPlKDg1HLFezI72jWjBeOh2kx8k4FqvvCaOjoBZpTYptTlpibsSlhwA"
-                  />
-                </div>
-                <div className="flex-1">
-                  <p className="font-label-sm text-label-sm text-primary">
-                    #ORD-2811
-                  </p>
-                  <p className="font-body-md text-on-surface font-semibold">
-                    Seasonal Stillness
-                  </p>
-                  <p className="font-label-sm text-label-sm text-on-surface-variant mt-1">
-                    Processing
-                  </p>
-                </div>
-                <span
-                  className="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors cursor-pointer"
-                  data-icon="arrow_forward"
-                >
-                  arrow_forward
-                </span>
-              </div>
+              ) : (
+                orders.map((order) => (
+                  <div className="group flex gap-4 items-start pb-6 border-b border-outline-variant/10">
+                    <div className="w-16 h-20 bg-surface-container-highest shrink-0 overflow-hidden"></div>
+                    <div className="flex-1">
+                      <p className="font-label-sm text-label-sm text-primary">
+                        #{order.orderNumber}
+                      </p>
+                      <p className="font-label-sm text-label-sm text-on-surface-variant mt-1">
+                        {order.placeAt}
+                      </p>
+                    </div>
+                    <span
+                      className="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors cursor-pointer"
+                      data-icon="arrow_forward"
+                    >
+                      arrow_forward
+                    </span>
+                  </div>
+                ))
+              )}
             </div>
             <button className="w-full mt-6 text-center font-label-sm text-label-sm text-on-surface-variant hover:text-primary border border-outline/30 py-3 transition-colors">
               VIEW ALL HISTORY

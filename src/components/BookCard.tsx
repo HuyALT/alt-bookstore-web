@@ -18,6 +18,13 @@ type BookCardProps = {
   onWishlistChange?: (bookId: string, isAdded: boolean) => void;
 };
 
+const formatMoney = (amount: number) => {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(amount);
+};
+
 export default function BookCard({
   id,
   genre,
@@ -166,7 +173,7 @@ export default function BookCard({
         </p>
 
         <p className="font-body-md text-body-md text-primary mt-4">
-          ${price.toFixed(2)}
+          {formatMoney(price)}
         </p>
       </div>
     </div>

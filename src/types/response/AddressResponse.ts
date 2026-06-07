@@ -2,7 +2,7 @@ export interface AddressResponse {
     id: string;
     fullName: string;
     line1: string;
-    line2: string;
+    line2?: string;
     city: string;
     postcode: string;
     country: string;

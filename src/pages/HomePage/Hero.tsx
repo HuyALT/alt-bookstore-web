@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import hero from "../../assets/hero.png";
 
 export default function Hero() {
   const navigate = useNavigate();
   const handleExploreClick = () => {
-    navigate("/archive");
+    navigate("/store");
   };
   return (
     <section className="relative h-204.75 flex items-center overflow-hidden bg-surface-container-low">
@@ -37,7 +38,7 @@ export default function Hero() {
             <img
               className="h-full w-full object-cover"
               data-alt="A sun-drenched, high-end private library interior with floor-to-ceiling dark wood bookshelves filled with antique books. The atmosphere is warm and scholarly, featuring a sophisticated palette of cream, gold, and deep ebony. Soft afternoon light filters through large windows, illuminating a leather armchair and a minimalist gold reading lamp in a high-key, elegant minimalist style."
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvR5sSvBrU0dI3IBhY2Sl_OPW_gSYn78JWB56txNjEC_U87yxIGLnrkGSVsPstqgg-03zHgCBI19voUxEw7krcWNhGIQbTPEO-3cm6lB-m0IepqyQwJNkSsq3Lk6z8NI-odTJOEZ8ELwEbH8FYQkBQ6wbX-fb2w5EFW7STd9AAJnw0rPbQG65Q2pjA-rSsgmh_Qv97eqpyWTXSbGud57IV7UiB7Ffln9DlZlhZ2gCPrTo66Yqq0g4JwkV9M-YnzolbTd2toC4gzpg"
+              src={hero}
             />
             <div className="absolute inset-0 bg-linear-to-r from-surface-container-low via-transparent to-transparent"></div>
           </div>
